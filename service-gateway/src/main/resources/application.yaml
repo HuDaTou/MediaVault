@@ -48,8 +48,11 @@ knife4j:
         context-path: /
         order: 3
 logging:
+  file:
+    name: logs/service-gateway.log
   level:
     root: INFO
+    com.overthinker.cloud.gateway: INFO
     org.springframework.security: DEBUG # 方便调试Spring Security
     org.springframework.security.oauth2: DEBUG # 方便调试OAuth2流程
     org.springframework.cloud.gateway: DEBUG # 方便调试Gateway路由
