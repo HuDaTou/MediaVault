@@ -5,7 +5,7 @@ import Brand from "@/views/Home/Brand/index.vue";
 import http from "@/utils/http.ts";
 
 // 测试网关连通性
-http.get('/cloud-web/test').then(res => {
+http.get('/service-web/test').then(res => {
   console.log('网关连通测试成功:', res);
 }).catch(err => {
   console.error('网关连通测试失败:', err);

@@ -25,7 +25,7 @@ let loadingShown = false;
 // request拦截器
 http.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     let url = config?.url;
-    if (url?.startsWith(import.meta.env.VITE_MUSIC_BASE_API)){
+    if (import.meta.env.VITE_MUSIC_BASE_API && url?.startsWith(import.meta.env.VITE_MUSIC_BASE_API)){
         config.baseURL = "";
     }
     let matchingPath = REQUEST_LOADING_PATH.find(path => url?.startsWith(path));
