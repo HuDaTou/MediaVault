@@ -80,7 +80,7 @@ logging:
 springdoc:
   api-docs:
     info:
-      title: 媒体资产处理服务 (cloud-media-asset-processing)
+      title: 媒体资产处理服务 (cloud-media)
       version: 1.0.0
       description: 提供文件上传、下载、存储和元数据管理的中心化服务。
 

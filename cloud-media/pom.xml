@@ -9,8 +9,8 @@
         <version>${revision}</version>
     </parent>
 
-    <artifactId>cloud-Media-Asset-Processing</artifactId>
-    <name>cloud-Media-Asset-Processing</name>
+    <artifactId>cloud-media</artifactId>
+    <name>cloud-media</name>
     <description>媒体资产处理服务，负责处理媒体资产的上传、下载、转换等操作</description>
     <packaging>jar</packaging>
 

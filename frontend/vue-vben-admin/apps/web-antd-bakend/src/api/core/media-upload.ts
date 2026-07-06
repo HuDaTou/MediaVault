@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 /** 媒体服务网关前缀 */
-const BASE = '/cloud-media-asset-processing/api/media';
+const BASE = '/cloud-media/api/media';
 
 /** 文件类型枚举 */
 export type FileType = 'IMAGE' | 'VIDEO' | 'AUDIO' | 'DOCUMENT' | 'OTHER';

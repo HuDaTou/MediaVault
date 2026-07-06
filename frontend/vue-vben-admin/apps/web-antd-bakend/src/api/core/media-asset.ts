@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 /** 网关前缀 */
-const BASE = '/cloud-media-asset-processing/api/media/assets';
+const BASE = '/cloud-media/api/media/assets';
 
 /** 媒体资产VO */
 export interface AssetVO {

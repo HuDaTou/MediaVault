@@ -18,7 +18,7 @@ import java.util.Map;
  * @author overthinker
  * @since 2025-08-02
  */
-@FeignClient(name = "cloud-media-asset-processing", contextId = "mediaAssetClient")
+@FeignClient(name = "cloud-media", contextId = "mediaAssetClient")
 public interface MediaAssetClient {
 
     /**

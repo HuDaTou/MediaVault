@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 /** 网关前缀 */
-const BASE = '/cloud-media-asset-processing/media/rules';
+const BASE = '/cloud-media/media/rules';
 
 /** 文件上传规则VO */
 export namespace FileUploadRulesApi {

@@ -12,7 +12,7 @@
     <modules>
 <!--        <module>cloud-provider-payment8001</module>-->
         <module>cloud-gatway9527</module>
-        <module>cloud-Media-Asset-Processing</module>
+        <module>cloud-media</module>
         <module>cloud-web</module>
         <module>spring-study</module>
         <module>cloud-drools</module>

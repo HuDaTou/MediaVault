@@ -1,7 +1,7 @@
 spring:
 
   application:
-    name: cloud-media-asset-processing # 应用名称，用于Consul注册
+    name: cloud-media # 应用名称，用于Consul注册
   cloud:
     consul:
       enabled: true
