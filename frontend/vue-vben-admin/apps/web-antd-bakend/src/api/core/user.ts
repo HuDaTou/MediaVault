@@ -79,7 +79,7 @@ export async function getUserInfoApi() {
     avatar: string;
     intro?: string;
     roles: string[];
-  }>('/cloud-auth/user/auth/info');
+  }>('/service-auth/user/auth/info');
 
   return {
     avatar: data.avatar || '',
@@ -97,29 +97,29 @@ export async function getUserInfoApi() {
 
 /** 获取用户列表（支持条件搜索） */
 export async function getUserListApi(data?: UserApi.UserSearchParams) {
-  return requestClient.post<UserApi.UserListVO[]>('/cloud-auth/user/list', data);
+  return requestClient.post<UserApi.UserListVO[]>('/service-auth/user/list', data);
 }
 
 /** 获取用户详情 */
 export async function getUserDetailsApi(id: number) {
   return requestClient.get<UserApi.UserDetailsVO>(
-    `/cloud-auth/user/details/${id}`,
+    `/service-auth/user/details/${id}`,
   );
 }
 
 /** 更新用户状态（启用/禁用） */
 export async function updateUserStatusApi(data: UserApi.UpdateStatusParams) {
-  return requestClient.post<void>('/cloud-auth/user/update/status', data);
+  return requestClient.post<void>('/service-auth/user/update/status', data);
 }
 
 /** 批量删除用户 */
 export async function deleteUserApi(data: UserApi.DeleteUserParams) {
-  return requestClient.delete<void>('/cloud-auth/user/delete', {
+  return requestClient.delete<void>('/service-auth/user/delete', {
     data,
   });
 }
 
 /** 管理员创建用户 */
 export async function adminCreateUserApi(data: UserApi.AdminCreateUserParams) {
-  return requestClient.post<void>('/cloud-auth/user/admin/create', data);
+  return requestClient.post<void>('/service-auth/user/admin/create', data);
 }

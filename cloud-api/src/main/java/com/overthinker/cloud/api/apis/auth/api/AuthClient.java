@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Feign client for the authentication service.
  */
-@FeignClient(name = "cloud-auth", contextId = "authClient")
+@FeignClient(name = "service-auth", contextId = "authClient")
 public interface AuthClient {
 
     @PostMapping("/permissions/register")

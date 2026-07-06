@@ -14,7 +14,7 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
  * 内部服务认证自动配置
  * <p>
  * 提供内部服务调用的通用组件，无论 {@link ResourceServerConfig} 是否加载都会生效。
- * 适用于所有需要支持内部 Feign 调用绕过的微服务（包括 cloud-auth）。
+ * 适用于所有需要支持内部 Feign 调用绕过的微服务（包括 service-auth）。
  * </p>
  * <p>
  * 提供的 Bean：

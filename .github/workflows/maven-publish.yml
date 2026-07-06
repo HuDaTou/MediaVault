@@ -6,7 +6,7 @@ name: Maven Package
 on:
   push:
     paths:
-      - 'cloud-web/src/**'  # 只有 src 目录下的文件被修改时触发
+      - 'service-web/src/**'  # 只有 src 目录下的文件被修改时触发
 
 
 jobs:

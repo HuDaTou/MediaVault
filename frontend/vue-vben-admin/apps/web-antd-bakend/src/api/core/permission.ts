@@ -1,7 +1,7 @@
 import { requestClient } from '#/api/request';
 
 /**
- * 权限 API — 对接 cloud-auth 的 PermissionController (/permissions)
+ * 权限 API — 对接 service-auth 的 PermissionController (/permissions)
  *
  * SysPermission 字段映射：
  *   name          → 权限描述（旧 permissionDesc）
@@ -13,7 +13,7 @@ import { requestClient } from '#/api/request';
  *   serviceName   → 所属服务
  */
 export namespace PermissionApi {
-  /** 权限列表项（与 cloud-auth SysPermission 对齐） */
+  /** 权限列表项（与 service-auth SysPermission 对齐） */
   export interface PermissionVO {
     id: string;
     menuId: string | null;
@@ -42,37 +42,37 @@ export namespace PermissionApi {
 
 // ==================== 权限管理 API ====================
 
-/** 获取权限列表（cloud-auth 无搜索接口，前端自行过滤） */
+/** 获取权限列表（service-auth 无搜索接口，前端自行过滤） */
 export async function getPermissionListApi() {
-  return requestClient.get<PermissionApi.PermissionVO[]>('/cloud-auth/permissions');
+  return requestClient.get<PermissionApi.PermissionVO[]>('/service-auth/permissions');
 }
 
 /** 获取单个权限详情（用于编辑回显） */
 export async function getPermissionDetailApi(id: string) {
   return requestClient.get<PermissionApi.PermissionVO>(
-    `/cloud-auth/permissions/${id}`,
+    `/service-auth/permissions/${id}`,
   );
 }
 
 /** 新增权限 */
 export async function addPermissionApi(data: PermissionApi.PermissionDTO) {
-  return requestClient.post<void>('/cloud-auth/permissions', data);
+  return requestClient.post<void>('/service-auth/permissions', data);
 }
 
 /** 更新权限 */
 export async function updatePermissionApi(id: string, data: PermissionApi.PermissionDTO) {
-  return requestClient.put<void>(`/cloud-auth/permissions/${id}`, data);
+  return requestClient.put<void>(`/service-auth/permissions/${id}`, data);
 }
 
 /** 删除权限 */
 export async function deletePermissionApi(id: string) {
-  return requestClient.delete<void>(`/cloud-auth/permissions/${id}`);
+  return requestClient.delete<void>(`/service-auth/permissions/${id}`);
 }
 
 /** 获取菜单列表（用于权限表单下拉选择所属菜单） */
 export async function getPermissionMenusApi() {
   return requestClient.get<{ id: string; title: string }[]>(
-    '/cloud-auth/menu',
+    '/service-auth/menu',
   );
 }
 
@@ -88,5 +88,5 @@ export interface PermissionTreeNode {
 
 /** 获取权限树（按分类分组，用于角色分配权限时的树形选择） */
 export async function getPermissionTreeApi() {
-  return requestClient.get<PermissionTreeNode[]>('/cloud-auth/permissions/tree');
+  return requestClient.get<PermissionTreeNode[]>('/service-auth/permissions/tree');
 }

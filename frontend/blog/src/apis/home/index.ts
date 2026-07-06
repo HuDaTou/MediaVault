@@ -3,7 +3,7 @@ import http from "@/utils/http.ts";
 // 获取首页文章列表
 export function getArticleList(pageNum: Number, pageSize: Number) {
     return http({
-        url: '/cloud-web/article/list',
+        url: '/service-web/article/list',
         method: 'get',
         params: {
             pageNum,
@@ -15,7 +15,7 @@ export function getArticleList(pageNum: Number, pageSize: Number) {
 // 获取推荐文章列表
 export function getRecommendArticleList() {
     return http({
-        url: '/cloud-web/article/recommend',
+        url: '/service-web/article/recommend',
         method: 'get'
     })
 }
@@ -23,7 +23,7 @@ export function getRecommendArticleList() {
 // 获取随机文章
 export function getRandomArticle() {
     return http({
-        url: '/cloud-web/article/random',
+        url: '/service-web/article/random',
         method: 'get'
     })
 }
@@ -31,7 +31,7 @@ export function getRandomArticle() {
 // 相关推荐(按照分类)
 export function getRelatedArticle(categoryId: string, articleId: string) {
     return http({
-        url: `/cloud-web/article/related/${categoryId}/${articleId}`,
+        url: `/service-web/article/related/${categoryId}/${articleId}`,
         method: 'get'
     })
 }

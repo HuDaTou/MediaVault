@@ -2,7 +2,7 @@
 
 ## 📚 文档导航
 
-本目录包含将 cloud-web 服务中的文件上传操作迁移到 cloud-Media-Asset-Processing 服务的完整计划文档。
+本目录包含将 service-web 服务中的文件上传操作迁移到 service-media 服务的完整计划文档。
 
 ### 📋 核心文档
 
@@ -25,10 +25,10 @@
 
 ## 🎯 项目目标
 
-将 `cloud-web` 服务中的文件上传操作迁移到使用 Feign 调用 `cloud-Media-Asset-Processing` 服务，实现：
+将 `service-web` 服务中的文件上传操作迁移到使用 Feign 调用 `service-media` 服务，实现：
 
 - ✅ **职责分离**：文件操作统一由媒体服务处理
-- ✅ **架构优化**：cloud-web 不直接依赖 MinIO SDK
+- ✅ **架构优化**：service-web 不直接依赖 MinIO SDK
 - ✅ **易于维护**：统一的文件管理逻辑
 - ✅ **性能提升**：支持大文件分片上传和并发处理
 
@@ -40,8 +40,8 @@
 
 | 服务 | 当前职责 | 目标职责 |
 |------|---------|---------|
-| cloud-web | 直接处理文件上传 | 通过 Feign 调用媒体服务 |
-| cloud-Media-Asset-Processing | - | 统一处理所有文件操作 |
+| service-web | 直接处理文件上传 | 通过 Feign 调用媒体服务 |
+| service-media | - | 统一处理所有文件操作 |
 | cloud-api | - | 提供 Feign 客户端接口 |
 
 ### 迁移内容
@@ -123,7 +123,7 @@ A: 使用分片上传，支持断点续传和并行处理。
 
 完成迁移后，将实现：
 
-- ✅ cloud-web 服务不再直接依赖 MinIO SDK
+- ✅ service-web 服务不再直接依赖 MinIO SDK
 - ✅ 所有文件操作通过 Feign 统一调用
 - ✅ 支持大文件分片上传（>100MB）
 - ✅ 支持高并发上传（10+并发）

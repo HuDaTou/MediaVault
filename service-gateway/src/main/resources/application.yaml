@@ -1,0 +1,55 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: service-gateway #以微服务注册进consul
+  cloud:
+    gateway:
+#      动态路由配置
+      discovery:
+        locator:
+          enabled: true # 开启根据服务发现的自动路由功能
+          lower-case-service-id: true # 将服务名转为小写
+  # Security Configuration for Resource Server (JWT Validation)
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # 配置授权服务器的JWK Set URI，网关将从这里获取公钥来验证JWT签名
+          # 假设service-auth运行在9000端口
+          issuer-uri: http://localhost:9123 # service-auth的Issuer URI
+          jwk-set-uri: http://localhost:9123/oauth2/jwks # service-auth的JWK Set端点
+
+
+knife4j:
+  # 聚合swagger文档
+  gateway:
+    enabled: true
+    # 排序规则(tag/operation排序自4.2.0版本新增)
+    # 取值：alpha-默认排序规则，官方swagger-ui默认实现,order-Knife4j提供的增强排序规则，开发者可扩展x-order，根据数值来自定义排序
+    tags-sorter: order
+    operations-sorter: order
+    # 指定手动配置的模式(默认为该模式)
+    strategy: manual
+    routes:
+      - name: 用户服务
+        # 真实子服务访问url地址-提供OpenAPI的文档
+        url: /user-service/v2/api-docs?group=default
+        service-name: user-service
+        # 路由前缀
+        # 兼容OpenAPI3规范在聚合时丢失contextPath属性的异常情况，由开发者自己配置contextPath,Knife4j的前端Ui做兼容处理,与url属性独立不冲突，仅OpenAPI3规范聚合需要，OpenAPI2规范不需要设置此属性,默认为(apiPathPrefix)
+        context-path: /
+        order: 2
+      - name: 订单服务
+        url: /order-service/v2/api-docs?group=default
+        service-name: order-service
+        # 路由前缀
+        context-path: /
+        order: 3
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG # 方便调试Spring Security
+    org.springframework.security.oauth2: DEBUG # 方便调试OAuth2流程
+    org.springframework.cloud.gateway: DEBUG # 方便调试Gateway路由

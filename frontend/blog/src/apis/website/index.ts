@@ -5,7 +5,7 @@ import {AxiosResponse} from "axios";
 // 获取网站信息
 export function getWebsiteInfo():Promise<AxiosResponse<WebsiteInfo>> {
     return http({
-        url: '/cloud-web/websiteInfo/front',
+        url: '/service-web/websiteInfo/front',
         method: 'get'
     })
 }
@@ -14,7 +14,7 @@ export function getWebsiteInfo():Promise<AxiosResponse<WebsiteInfo>> {
 // 查询banner列表
 export async function backGetBanners() {
     return http({
-        url: '/cloud-web/banners/list',
+        url: '/service-web/banners/list',
         method: 'get'
     })
 }

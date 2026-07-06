@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Map;
 
-@FeignClient(name = "cloud-auth", contextId = "emailClient")
+@FeignClient(name = "service-auth", contextId = "emailClient")
 public interface EmailClient {
 
     @PostMapping("/email/send-code")

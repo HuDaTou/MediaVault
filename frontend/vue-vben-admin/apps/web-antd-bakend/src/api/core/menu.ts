@@ -53,40 +53,40 @@ export namespace MenuApi {
  * 获取菜单列表（扁平列表）
  */
 export async function getMenuListApi() {
-  return requestClient.get<MenuApi.MenuListVO[]>('/cloud-auth/menu');
+  return requestClient.get<MenuApi.MenuListVO[]>('/service-auth/menu');
 }
 
 /**
  * 获取菜单树（树形结构）
  */
 export async function getAllMenusApi() {
-  return requestClient.get<RouteRecordStringComponent[]>('/cloud-auth/menu/all');
+  return requestClient.get<RouteRecordStringComponent[]>('/service-auth/menu/all');
 }
 
 /**
  * 获取单个菜单
  */
 export async function getMenuDetailApi(id: string) {
-  return requestClient.get<MenuApi.MenuListVO>(`/cloud-auth/menu/${id}`);
+  return requestClient.get<MenuApi.MenuListVO>(`/service-auth/menu/${id}`);
 }
 
 /**
  * 创建菜单
  */
 export async function createMenuApi(data: MenuApi.MenuFormParams) {
-  return requestClient.post<void>('/cloud-auth/menu', data);
+  return requestClient.post<void>('/service-auth/menu', data);
 }
 
 /**
  * 更新菜单
  */
 export async function updateMenuApi(id: string, data: MenuApi.MenuFormParams) {
-  return requestClient.put<void>(`/cloud-auth/menu/${id}`, data);
+  return requestClient.put<void>(`/service-auth/menu/${id}`, data);
 }
 
 /**
  * 删除菜单（包含子菜单）
  */
 export async function deleteMenuApi(id: string) {
-  return requestClient.delete<void>(`/cloud-auth/menu/${id}`);
+  return requestClient.delete<void>(`/service-auth/menu/${id}`);
 }

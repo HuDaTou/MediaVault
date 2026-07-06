@@ -27,29 +27,29 @@ export namespace RoleApi {
 
 /** 获取角色列表 */
 export async function getRoleListApi() {
-  return requestClient.get<RoleApi.RoleVO[]>('/cloud-auth/roles');
+  return requestClient.get<RoleApi.RoleVO[]>('/service-auth/roles');
 }
 
 /** 创建角色 */
 export async function createRoleApi(data: RoleApi.RoleParams) {
-  return requestClient.post<void>('/cloud-auth/roles', data);
+  return requestClient.post<void>('/service-auth/roles', data);
 }
 
 /** 更新角色 */
 export async function updateRoleApi(id: string, data: RoleApi.RoleParams) {
-  return requestClient.put<void>(`/cloud-auth/roles/${id}`, data);
+  return requestClient.put<void>(`/service-auth/roles/${id}`, data);
 }
 
 /** 删除角色 */
 export async function deleteRoleApi(id: string) {
-  return requestClient.delete<void>(`/cloud-auth/roles/${id}`);
+  return requestClient.delete<void>(`/service-auth/roles/${id}`);
 }
 
 // ==================== 角色权限 API ====================
 
 /** 获取角色已分配的权限ID列表 */
 export async function getRolePermissionIdsApi(roleId: string) {
-  return requestClient.get<string[]>(`/cloud-auth/roles/${roleId}/permissions`);
+  return requestClient.get<string[]>(`/service-auth/roles/${roleId}/permissions`);
 }
 
 /** 为角色分配权限 */
@@ -58,7 +58,7 @@ export async function assignRolePermissionsApi(
   permissionIds: string[],
 ) {
   return requestClient.put<void>(
-    `/cloud-auth/roles/${roleId}/permissions`,
+    `/service-auth/roles/${roleId}/permissions`,
     permissionIds,
   );
 }

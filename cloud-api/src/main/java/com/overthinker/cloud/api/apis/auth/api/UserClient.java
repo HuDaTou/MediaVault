@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(name = "cloud-auth", contextId = "userClient")
+@FeignClient(name = "service-auth", contextId = "userClient")
 public interface UserClient {
 
     @GetMapping("/user/count")

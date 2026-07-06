@@ -40,7 +40,7 @@ export interface RegisterRequest {
 
 export function login(data: LoginRequest): Promise<ApiResult<LoginResponse>> {
     return http({
-        url: '/cloud-auth/auth/login',
+        url: '/service-auth/auth/login',
         data: data,
         method: 'post'
     })
@@ -78,7 +78,7 @@ export interface OauthLoginData {
 // 退出登录
 export function logout(): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/auth/logout',
+        url: '/service-auth/auth/logout',
         method: 'post'
     })
 }
@@ -103,7 +103,7 @@ export function oauthLogin(accessToken: string, type: string, username: string):
 // 获取用户信息
 export function getUserInfo(): Promise<ApiResult<UserInfo>> {
     return http({
-        url: '/cloud-auth/user/auth/info',
+        url: '/service-auth/user/auth/info',
         method: 'get'
     })
 }
@@ -111,7 +111,7 @@ export function getUserInfo(): Promise<ApiResult<UserInfo>> {
 // 用户注册
 export function register(data: RegisterRequest): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/auth/register',
+        url: '/service-auth/auth/register',
         data: data,
         method: 'post'
     })
@@ -120,7 +120,7 @@ export function register(data: RegisterRequest): Promise<ApiResult<void>> {
 // 重置密码步骤一
 export function resetPasswordStepOne(data: ResetConfirmRequest): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/auth/reset-confirm',
+        url: '/service-auth/auth/reset-confirm',
         data: data,
         method: 'post'
     })
@@ -129,7 +129,7 @@ export function resetPasswordStepOne(data: ResetConfirmRequest): Promise<ApiResu
 // 重置密码步骤二
 export function resetPasswordStepTwo(data: ResetPasswordRequest): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/auth/reset-password',
+        url: '/service-auth/auth/reset-password',
         data: data,
         method: 'post'
     })
@@ -138,7 +138,7 @@ export function resetPasswordStepTwo(data: ResetPasswordRequest): Promise<ApiRes
 // 修改用户信息
 export function updateUserAccount(data: UpdateUserRequest): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/user/auth/update',
+        url: '/service-auth/user/auth/update',
         data: data,
         method: 'post'
     })
@@ -147,7 +147,7 @@ export function updateUserAccount(data: UpdateUserRequest): Promise<ApiResult<vo
 // 修改电子邮箱
 export function updateEmail(data: UpdateEmailRequest): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/user/auth/update/email',
+        url: '/service-auth/user/auth/update/email',
         data: data,
         method: 'post'
     })
@@ -156,7 +156,7 @@ export function updateEmail(data: UpdateEmailRequest): Promise<ApiResult<void>> 
 // 修改第三方登录电子邮箱
 export function updateThirdEmail(data: UpdateEmailRequest): Promise<ApiResult<void>> {
     return http({
-        url: '/cloud-auth/user/auth/third/update/email',
+        url: '/service-auth/user/auth/third/update/email',
         data: data,
         method: 'post'
     })

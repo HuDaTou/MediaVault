@@ -11,15 +11,15 @@
     <packaging>pom</packaging>
     <modules>
 <!--        <module>cloud-provider-payment8001</module>-->
-        <module>cloud-gatway9527</module>
-        <module>cloud-media</module>
-        <module>cloud-web</module>
+        <module>service-gateway</module>
+        <module>service-media</module>
+        <module>service-web</module>
         <module>spring-study</module>
-        <module>cloud-drools</module>
+        <module>service-drools</module>
         <module>cloud-api</module>
         <module>cloud-system-starter</module>
-        <module>cloud-AI</module>
-        <module>cloud-auth</module>
+        <module>service-ai</module>
+        <module>service-auth</module>
         <module>cloud-common</module>
     </modules>
 
@@ -46,7 +46,7 @@
         <spring.cloud.version>2025.0.1</spring.cloud.version>
         <spring.cloud.alibaba.version>2025.0.0.0</spring.cloud.alibaba.version>
         <boot.validation.version>3.4.11</boot.validation.version>
-        <spring.ai.version>1.1.4</spring.ai.version>
+        <spring.ai.version>1.1.5</spring.ai.version>
         <micrometer-tracing.version>1.3.5</micrometer-tracing.version>
 
 

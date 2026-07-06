@@ -29,7 +29,7 @@ export function getPhotoList(params: {
     parentId?: number | null;
 }) {
     return http<PageVO<PhotoAndAlbumVO[]>>({
-        url: '/cloud-web/photo/list',
+        url: '/service-web/photo/list',
         method: 'get',
         params
     });
