@@ -28,8 +28,8 @@ public class PermissionScanner {
     private final ApplicationContext applicationContext;
     private final Environment environment;
 
-    // 正则表达式，只匹配 hasAuthority('xxx') 格式的权限表达式
-    private static final Pattern HAS_AUTHORITY_PATTERN = Pattern.compile("hasAuthority\\s*\\(\\s*'([^']+)'\\s*\\)");
+    // 正则表达式，匹配 hasAuthority('xxx') 和 hasAnyAuthority('xxx') 格式的权限表达式
+    private static final Pattern HAS_AUTHORITY_PATTERN = Pattern.compile("has(?:Any)?Authority\\s*\\(\\s*'([^']+)'\\s*\\)");
 
     public PermissionScanner(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
