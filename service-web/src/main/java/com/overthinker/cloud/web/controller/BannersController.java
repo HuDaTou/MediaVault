@@ -50,7 +50,7 @@ public class BannersController extends BaseController {
      *
      * @return Banner 列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:banner:list')")
+    @PreAuthorize("hasAuthority('blog:banner:list')")
     @Operation(summary = "后台获取所有前台首页Banner图片")
     @LogAnnotation(module = "信息管理", operation = LogConst.GET)
     @AccessLimit(seconds = 60, maxCount = 60)
@@ -65,7 +65,7 @@ public class BannersController extends BaseController {
      * @param id Banner ID
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:banner:delete')")
+    @PreAuthorize("hasAuthority('blog:banner:delete')")
     @Operation(summary = "删除前台首页Banner图片")
     @LogAnnotation(module = "信息管理", operation = LogConst.DELETE)
     @Parameter(name = "id", description = "Banner ID", required = true)
@@ -81,7 +81,7 @@ public class BannersController extends BaseController {
      * @param bannerImage Banner 图片文件
      * @return Banner 信息
      */
-    @PreAuthorize("hasAnyAuthority('blog:banner:add')")
+    @PreAuthorize("hasAuthority('blog:banner:add')")
     @Operation(summary = "添加前台首页Banner图片")
     @LogAnnotation(module = "信息管理", operation = LogConst.INSERT)
     @Parameter(name = "bannerImage", description = "Banner图片", required = true)
@@ -99,7 +99,7 @@ public class BannersController extends BaseController {
      * @param banners Banner 列表（包含排序信息）
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:banner:update')")
+    @PreAuthorize("hasAuthority('blog:banner:update')")
     @Operation(summary = "更新前台首页Banner图片顺序")
     @LogAnnotation(module = "信息管理", operation = LogConst.UPDATE)
     @Parameter(name = "SortOrders", description = "顺序", required = true)

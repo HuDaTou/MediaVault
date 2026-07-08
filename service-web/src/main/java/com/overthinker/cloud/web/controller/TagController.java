@@ -56,7 +56,7 @@ public class TagController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "新增标签-文章列表")
-    @PreAuthorize("hasAnyAuthority('blog:tag:add')")
+    @PreAuthorize("hasAuthority('blog:tag:add')")
     @LogAnnotation(module = "标签管理", operation = LogConst.INSERT)
     @AccessLimit(seconds = 60, maxCount = 30)
     @PutMapping
@@ -70,7 +70,7 @@ public class TagController extends BaseController {
      * @return 标签列表
      */
     @Operation(summary = "获取标签列表")
-    @PreAuthorize("hasAnyAuthority('blog:tag:list')")
+    @PreAuthorize("hasAuthority('blog:tag:list')")
     @LogAnnotation(module = "标签管理", operation = LogConst.GET)
     @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/back/list")
@@ -85,7 +85,7 @@ public class TagController extends BaseController {
      * @return 标签列表
      */
     @Operation(summary = "搜索标签列表")
-    @PreAuthorize("hasAnyAuthority('blog:tag:search')")
+    @PreAuthorize("hasAuthority('blog:tag:search')")
     @LogAnnotation(module = "标签管理", operation = LogConst.SEARCH)
     @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/search")
@@ -100,7 +100,7 @@ public class TagController extends BaseController {
      * @return 标签信息
      */
     @Operation(summary = "根据id查询标签")
-    @PreAuthorize("hasAnyAuthority('blog:tag:search')")
+    @PreAuthorize("hasAuthority('blog:tag:search')")
     @LogAnnotation(module = "标签管理", operation = LogConst.GET)
     @AccessLimit(seconds = 60, maxCount = 30)
     @GetMapping("/back/get/{id}")
@@ -115,7 +115,7 @@ public class TagController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "新增标签-标签列表")
-    @PreAuthorize("hasAnyAuthority('blog:tag:add')")
+    @PreAuthorize("hasAuthority('blog:tag:add')")
     @LogAnnotation(module = "标签管理", operation = LogConst.INSERT)
     @AccessLimit(seconds = 60, maxCount = 30)
     @PutMapping("/back/add")
@@ -130,7 +130,7 @@ public class TagController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "修改标签")
-    @PreAuthorize("hasAnyAuthority('blog:tag:update')")
+    @PreAuthorize("hasAuthority('blog:tag:update')")
     @LogAnnotation(module = "标签管理", operation = LogConst.UPDATE)
     @AccessLimit(seconds = 60, maxCount = 30)
     @PostMapping("/back/update")
@@ -145,7 +145,7 @@ public class TagController extends BaseController {
      * @return 操作结果
      */
     @Operation(summary = "删除标签")
-    @PreAuthorize("hasAnyAuthority('blog:tag:delete')")
+    @PreAuthorize("hasAuthority('blog:tag:delete')")
     @LogAnnotation(module = "标签管理", operation = LogConst.DELETE)
     @AccessLimit(seconds = 60, maxCount = 30)
     @DeleteMapping("/back/delete")

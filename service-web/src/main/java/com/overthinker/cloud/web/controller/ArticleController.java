@@ -165,7 +165,7 @@ public class ArticleController extends BaseController {
         return messageHandler(() -> null);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @PreAuthorize("hasAuthority('blog:publish:article')")
     @Operation(summary = "上传文章封面")
     @Parameter(name = "articleCover", description = "文章封面")
     @LogAnnotation(module = "文章管理", operation = LogConst.UPLOAD_IMAGE)
@@ -175,7 +175,7 @@ public class ArticleController extends BaseController {
         return articleService.uploadArticleCover(articleCover);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @PreAuthorize("hasAuthority('blog:publish:article')")
     @Operation(summary = "发布文章")
     @Parameter(name = "articleDTO", description = "文章信息")
     @LogAnnotation(module = "文章管理", operation = LogConst.INSERT)
@@ -185,7 +185,7 @@ public class ArticleController extends BaseController {
         return articleService.publish(articleDTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @PreAuthorize("hasAuthority('blog:publish:article')")
     @Operation(summary = "删除文章封面")
     @Parameter(name = "articleCover", description = "文章封面")
     @LogAnnotation(module = "发布错误", operation = LogConst.DELETE)
@@ -195,7 +195,7 @@ public class ArticleController extends BaseController {
         return articleService.deleteArticleCover(articleCoverUrl);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:publish:article')")
+    @PreAuthorize("hasAuthority('blog:publish:article')")
     @Operation(summary = "上传文章图片")
     @Parameters({
             @Parameter(name = "articleImage", description = "文章图片"),
@@ -210,7 +210,7 @@ public class ArticleController extends BaseController {
         return articleService.uploadArticleImage(articleImage);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:article:list')")
+    @PreAuthorize("hasAuthority('blog:article:list')")
     @Operation(summary = "获取所有的文章列表")
     @LogAnnotation(module = "文章管理", operation = LogConst.GET)
     @AccessLimit(seconds = 60, maxCount = 30)
@@ -219,7 +219,7 @@ public class ArticleController extends BaseController {
         return messageHandler(() -> articleService.listArticle());
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:article:search')")
+    @PreAuthorize("hasAuthority('blog:article:search')")
     @Operation(summary = "搜索文章列表")
     @Parameters({
             @Parameter(name = "searchArticleDTO", description = "搜索文章信息", required = true)
@@ -231,7 +231,7 @@ public class ArticleController extends BaseController {
         return messageHandler(() -> articleService.searchArticle(searchArticleDTO));
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:article:update')")
+    @PreAuthorize("hasAuthority('blog:article:update')")
     @Operation(summary = "修改文章状态")
     @Parameters({
             @Parameter(name = "id", description = "文章id", required = true),
@@ -247,7 +247,7 @@ public class ArticleController extends BaseController {
         return articleService.updateStatus(id, status);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:article:update')")
+    @PreAuthorize("hasAuthority('blog:article:update')")
     @Operation(summary = "修改文章是否顶置")
     @Parameters({
             @Parameter(name = "id", description = "文章id", required = true),
@@ -263,7 +263,7 @@ public class ArticleController extends BaseController {
         return articleService.updateIsTop(id, isTop);
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:article:echo')")
+    @PreAuthorize("hasAuthority('blog:article:echo')")
     @Operation(summary = "回显文章数据")
     @Parameters({
             @Parameter(name = "id", description = "文章id", required = true)
@@ -275,7 +275,7 @@ public class ArticleController extends BaseController {
         return messageHandler(() -> articleService.getArticleDTO(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('blog:article:delete')")
+    @PreAuthorize("hasAuthority('blog:article:delete')")
     @Operation(summary = "删除文章")
     @Parameters({
             @Parameter(name = "id", description = "文章id", required = true)

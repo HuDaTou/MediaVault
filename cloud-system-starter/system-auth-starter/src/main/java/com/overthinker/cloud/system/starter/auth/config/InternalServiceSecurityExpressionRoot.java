@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 /**
  * 内部服务安全表达式委托
  * <p>
- * 包装标准的 MethodSecurityExpressionRoot，拦截 hasAuthority/hasAnyAuthority/hasRole/hasAnyRole 调用。
+ * 包装标准的 MethodSecurityExpressionRoot，拦截 hasAuthority/hasAuthority/hasRole/hasAnyRole 调用。
  * 当请求持有 ROLE_INTERNAL_SERVICE 时，这四个方法恒返回 true，其余方法委托给原始根对象。
  * </p>
  * <p>
@@ -45,8 +45,8 @@ public class InternalServiceSecurityExpressionRoot implements MethodSecurityExpr
     }
 
     @Override
-    public boolean hasAnyAuthority(String... authorities) {
-        return internalServiceChecker.get() || delegate.hasAnyAuthority(authorities);
+    public boolean hasAuthority(String... authorities) {
+        return internalServiceChecker.get() || delegate.hasAuthority(authorities);
     }
 
     @Override

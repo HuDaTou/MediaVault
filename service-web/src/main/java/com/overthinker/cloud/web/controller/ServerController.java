@@ -29,7 +29,7 @@ public class ServerController extends BaseController {
     private final static Server server = new Server();
 
 
-    @PreAuthorize("hasAnyAuthority('monitor:server:list')")
+    @PreAuthorize("hasAuthority('monitor:server:list')")
     @AccessLimit(seconds = 60, maxCount = 30)
     @Operation(summary = "获取服务监控数据")
     @GetMapping()
@@ -43,7 +43,7 @@ public class ServerController extends BaseController {
 
 
 //    @CrossOrigin(origins = "*", maxAge = 3600)
-////    @PreAuthorize("hasAnyAuthority('monitor:server:list')")
+////    @PreAuthorize("hasAuthority('monitor:server:list')")
 //    @Operation(summary = "SSE获取服务监控数据")
 //    @GetMapping(value = "/sse")
 //    public SseEmitter getSseEmitter()  {

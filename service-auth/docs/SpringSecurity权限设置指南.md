@@ -15,7 +15,7 @@ Spring Security 提供了丰富的 SpEL（Spring Expression Language）权限表
 | `hasRole('xxx')` | 拥有指定角色（自动加 ROLE_ 前缀） | 基于角色的权限控制 |
 | `hasAuthority('xxx')` | 拥有指定权限码 | 基于权限码的细粒度控制 |
 | `hasAnyRole('xxx', 'yyy')` | 拥有任一角色 | 多角色权限控制 |
-| `hasAnyAuthority('xxx', 'yyy')` | 拥有任一权限码 | 多权限码控制 |
+| `hasAuthority('xxx', 'yyy')` | 拥有任一权限码 | 多权限码控制 |
 | `permitAll()` | 允许所有用户访问 | 公开接口 |
 | `denyAll()` | 拒绝所有用户访问 | 禁用接口 |
 | `principal` | 当前登录用户对象 | 获取用户信息 |
@@ -69,7 +69,7 @@ public class UserController {
     }
 
     // 需要多个权限中的任意一个
-    @PreAuthorize("hasAnyAuthority('auth:user:list', 'auth:user:query')")
+    @PreAuthorize("hasAuthority('auth:user:list', 'auth:user:query')")
     @GetMapping("/{id}")
     public ResultData<UserVO> getById(@PathVariable Long id) {
         // ...

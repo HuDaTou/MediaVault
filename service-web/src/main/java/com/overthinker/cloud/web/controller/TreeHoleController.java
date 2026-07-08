@@ -72,7 +72,7 @@ public class TreeHoleController extends BaseController {
      *
      * @return 树洞列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:treeHole:list')")
+    @PreAuthorize("hasAuthority('blog:treeHole:list')")
     @Operation(summary = "后台树洞列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "树洞管理", operation = LogConst.GET)
@@ -87,7 +87,7 @@ public class TreeHoleController extends BaseController {
      * @param searchDTO 搜索条件
      * @return 树洞列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:treeHole:search')")
+    @PreAuthorize("hasAuthority('blog:treeHole:search')")
     @Operation(summary = "搜索后台树洞列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "树洞管理", operation = LogConst.SEARCH)
@@ -102,7 +102,7 @@ public class TreeHoleController extends BaseController {
      * @param treeHoleIsCheckDTO 审核信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:treeHole:isCheck')")
+    @PreAuthorize("hasAuthority('blog:treeHole:isCheck')")
     @Operation(summary = "修改树洞是否通过")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "树洞管理", operation = LogConst.UPDATE)
@@ -117,7 +117,7 @@ public class TreeHoleController extends BaseController {
      * @param ids 树洞ID列表
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:treeHole:delete')")
+    @PreAuthorize("hasAuthority('blog:treeHole:delete')")
     @Operation(summary = "删除树洞")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "树洞管理", operation = LogConst.DELETE)

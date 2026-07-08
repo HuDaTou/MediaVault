@@ -78,7 +78,7 @@ public class LeaveWordController extends BaseController {
      *
      * @return 留言列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:leaveword:list')")
+    @PreAuthorize("hasAuthority('blog:leaveword:list')")
     @Operation(summary = "后台留言列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "留言管理", operation = LogConst.GET)
@@ -93,7 +93,7 @@ public class LeaveWordController extends BaseController {
      * @param searchDTO 搜索条件
      * @return 留言列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:leaveword:search')")
+    @PreAuthorize("hasAuthority('blog:leaveword:search')")
     @Operation(summary = "搜索后台留言列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "留言管理", operation = LogConst.SEARCH)
@@ -108,7 +108,7 @@ public class LeaveWordController extends BaseController {
      * @param leaveWordIsCheckDTO 审核信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:leaveword:isCheck')")
+    @PreAuthorize("hasAuthority('blog:leaveword:isCheck')")
     @Operation(summary = "修改留言是否通过")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "留言管理", operation = LogConst.UPDATE)
@@ -123,7 +123,7 @@ public class LeaveWordController extends BaseController {
      * @param ids 留言ID列表
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:leaveword:delete')")
+    @PreAuthorize("hasAuthority('blog:leaveword:delete')")
     @Operation(summary = "删除留言")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "留言管理", operation = LogConst.DELETE)

@@ -75,7 +75,7 @@ public class LinkController extends BaseController {
      *
      * @return 友链列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:link:list')")
+    @PreAuthorize("hasAuthority('blog:link:list')")
     @Operation(summary = "后台友链列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "友链管理", operation = LogConst.GET)
@@ -90,7 +90,7 @@ public class LinkController extends BaseController {
      * @param searchDTO 搜索条件
      * @return 友链列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:link:search')")
+    @PreAuthorize("hasAuthority('blog:link:search')")
     @Operation(summary = "搜索后台友链列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "友链管理", operation = LogConst.SEARCH)
@@ -105,7 +105,7 @@ public class LinkController extends BaseController {
      * @param linkIsCheckDTO 审核信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:link:isCheck')")
+    @PreAuthorize("hasAuthority('blog:link:isCheck')")
     @Operation(summary = "修改友链是否通过")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "友链管理", operation = LogConst.UPDATE)
@@ -120,7 +120,7 @@ public class LinkController extends BaseController {
      * @param ids 友链ID列表
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:link:delete')")
+    @PreAuthorize("hasAuthority('blog:link:delete')")
     @Operation(summary = "删除友链")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "友链管理", operation = LogConst.DELETE)

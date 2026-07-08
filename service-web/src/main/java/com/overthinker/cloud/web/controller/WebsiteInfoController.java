@@ -42,7 +42,7 @@
 //      * @param avatar 头像文件
 //      * @return 头像访问URL
 //      */
-//     @PreAuthorize("hasAnyAuthority('blog:update:websiteInfo')")
+//     @PreAuthorize("hasAuthority('blog:update:websiteInfo')")
 //     @Operation(summary = "上传站长头像")
 //     @Parameter(name = "avatar", description = "头像")
 //     @AccessLimit(seconds = 60, maxCount = 5)
@@ -58,7 +58,7 @@
 //      * @param background 背景图文件
 //      * @return 背景访问URL
 //      */
-//     @PreAuthorize("hasAnyAuthority('blog:update:websiteInfo')")
+//     @PreAuthorize("hasAuthority('blog:update:websiteInfo')")
 //     @Operation(summary = "上传站长资料卡背景")
 //     @Parameter(name = "background", description = "资料卡片背景")
 //     @AccessLimit(seconds = 60, maxCount = 5)
@@ -73,7 +73,7 @@
 //      *
 //      * @return 网站信息
 //      */
-//     @PreAuthorize("hasAnyAuthority('blog:get:websiteInfo')")
+//     @PreAuthorize("hasAuthority('blog:get:websiteInfo')")
 //     @Operation(summary = "查看网站信息-后端")
 //     @AccessLimit(seconds = 60, maxCount = 30)
 //     @GetMapping
@@ -99,7 +99,7 @@
 //      * @param stationmasterInfoDTO 站长信息
 //      * @return 操作结果
 //      */
-//     @PreAuthorize("hasAnyAuthority('blog:update:websiteInfo')")
+//     @PreAuthorize("hasAuthority('blog:update:websiteInfo')")
 //     @Operation(summary = "修改或创建站长信息")
 //     @Parameter(name = "stationmasterInfoDTO", description = "站长信息")
 //     @PostMapping("/stationmaster")
@@ -113,7 +113,7 @@
 //      * @param websiteInfoDTO 网站信息
 //      * @return 操作结果
 //      */
-//     @PreAuthorize("hasAnyAuthority('blog:update:websiteInfo')")
+//     @PreAuthorize("hasAuthority('blog:update:websiteInfo')")
 //     @Operation(summary = "修改或创建网站信息")
 //     @Parameter(name = "websiteInfoDTO", description = "网站信息")
 //     @PostMapping("/webInfo")

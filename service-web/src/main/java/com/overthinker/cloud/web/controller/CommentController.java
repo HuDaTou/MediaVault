@@ -91,7 +91,7 @@ public class CommentController extends BaseController {
      *
      * @return 评论列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:comment:list')")
+    @PreAuthorize("hasAuthority('blog:comment:list')")
     @Operation(summary = "后台评论列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "评论管理", operation = LogConst.GET)
@@ -106,7 +106,7 @@ public class CommentController extends BaseController {
      * @param searchDTO 搜索条件
      * @return 评论列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:comment:search')")
+    @PreAuthorize("hasAuthority('blog:comment:search')")
     @Operation(summary = "搜索后台评论列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "评论管理", operation = LogConst.SEARCH)
@@ -121,7 +121,7 @@ public class CommentController extends BaseController {
      * @param commentIsCheckDTO 审核信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:comment:isCheck')")
+    @PreAuthorize("hasAuthority('blog:comment:isCheck')")
     @Operation(summary = "修改评论是否通过")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "评论管理", operation = LogConst.UPDATE)
@@ -136,7 +136,7 @@ public class CommentController extends BaseController {
      * @param id 评论ID
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:comment:delete')")
+    @PreAuthorize("hasAuthority('blog:comment:delete')")
     @Operation(summary = "删除评论")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "评论管理", operation = LogConst.DELETE)

@@ -18,7 +18,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 @EnableDiscoveryClient
 @RefreshScope //consul配置动态刷新
 @EnableScheduling
-@EnableMethodSecurity
+// @EnableMethodSecurity
 @EnableFeignClients(basePackages = "com.overthinker.cloud.api")
 public class cloudWebApplication {
 

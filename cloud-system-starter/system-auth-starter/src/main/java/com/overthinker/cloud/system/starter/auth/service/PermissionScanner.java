@@ -28,7 +28,7 @@ public class PermissionScanner {
     private final ApplicationContext applicationContext;
     private final Environment environment;
 
-    // 正则表达式，匹配 hasAuthority('xxx') 和 hasAnyAuthority('xxx') 格式的权限表达式
+    // 正则表达式，匹配 hasAuthority('xxx') 和 hasAuthority('xxx') 格式的权限表达式
     private static final Pattern HAS_AUTHORITY_PATTERN = Pattern.compile("has(?:Any)?Authority\\s*\\(\\s*'([^']+)'\\s*\\)");
 
     public PermissionScanner(ApplicationContext applicationContext) {
@@ -125,7 +125,7 @@ public class PermissionScanner {
 
     /**
      * 解析 @PreAuthorize 注解内容，只提取 hasAuthority('xxx') 格式的权限标识
-     * 其他格式如 hasRole、hasAnyAuthority、permitAll 等将被忽略
+     * 其他格式如 hasRole、hasAuthority、permitAll 等将被忽略
      */
     private String getPermissionCode(Method method) {
         PreAuthorize preAuthorize = method.getAnnotation(PreAuthorize.class);

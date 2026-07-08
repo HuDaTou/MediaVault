@@ -111,7 +111,7 @@ public class FavoriteController extends BaseController {
      *
      * @return 收藏列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:favorite:list')")
+    @PreAuthorize("hasAuthority('blog:favorite:list')")
     @Operation(summary = "后台收藏列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "收藏管理", operation = LogConst.GET)
@@ -126,7 +126,7 @@ public class FavoriteController extends BaseController {
      * @param searchDTO 搜索条件
      * @return 收藏列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:favorite:search')")
+    @PreAuthorize("hasAuthority('blog:favorite:search')")
     @Operation(summary = "搜索后台收藏列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "收藏管理", operation = LogConst.SEARCH)
@@ -141,7 +141,7 @@ public class FavoriteController extends BaseController {
      * @param favoriteIsCheckDTO 审核信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:favorite:isCheck')")
+    @PreAuthorize("hasAuthority('blog:favorite:isCheck')")
     @Operation(summary = "修改收藏是否通过")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "收藏管理", operation = LogConst.UPDATE)
@@ -156,7 +156,7 @@ public class FavoriteController extends BaseController {
      * @param ids 收藏ID列表
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:favorite:delete')")
+    @PreAuthorize("hasAuthority('blog:favorite:delete')")
     @Operation(summary = "删除收藏")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "收藏管理", operation = LogConst.DELETE)

@@ -45,7 +45,7 @@ public class PhotoController extends BaseController {
      * @param parentId 父相册ID，不传则查询顶层相册
      * @return 分页相册/照片列表
      */
-    @PreAuthorize("hasAnyAuthority('blog:photo:list')")
+    @PreAuthorize("hasAuthority('blog:photo:list')")
     @Operation(summary = "后台相册或照片列表")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "相册管理", operation = LogConst.GET)
@@ -84,7 +84,7 @@ public class PhotoController extends BaseController {
      * @param albumDTO 相册信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:album:create')")
+    @PreAuthorize("hasAuthority('blog:album:create')")
     @Operation(summary = "后台创建相册")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "相册管理", operation = LogConst.INSERT)
@@ -101,7 +101,7 @@ public class PhotoController extends BaseController {
      * @param parentId 父相册ID，不传则上传到顶层
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:photo:upload')")
+    @PreAuthorize("hasAuthority('blog:photo:upload')")
     @Operation(summary = "后台上传照片")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "相册管理", operation = LogConst.UPLOAD_IMAGE)
@@ -119,7 +119,7 @@ public class PhotoController extends BaseController {
      * @param albumDTO 相册信息
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:album:update')")
+    @PreAuthorize("hasAuthority('blog:album:update')")
     @Operation(summary = "后台修改相册")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "相册管理", operation = LogConst.UPDATE)
@@ -134,7 +134,7 @@ public class PhotoController extends BaseController {
      * @param deletePhotoOrAlbum 删除参数（类型和ID）
      * @return 操作结果
      */
-    @PreAuthorize("hasAnyAuthority('blog:photo:delete')")
+    @PreAuthorize("hasAuthority('blog:photo:delete')")
     @Operation(summary = "后台删除相册或照片")
     @AccessLimit(seconds = 60, maxCount = 30)
     @LogAnnotation(module = "相册管理", operation = LogConst.DELETE)

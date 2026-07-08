@@ -90,7 +90,7 @@ mybatis-plus:
 
 
 server:
-  port: 8000
+  port: 8084
 http_pool:
   max_total: 200
   default_max_per_route: 100
