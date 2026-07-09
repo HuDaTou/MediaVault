@@ -232,7 +232,11 @@ public enum MediaUploadRuleEnum {
         if (allowedExtensions == null || allowedExtensions.isEmpty()) {
             return true;
         }
-        return allowedExtensions.contains(extension.toLowerCase());
+        String ext = extension.toLowerCase();
+        if (ext.startsWith(".")) {
+            ext = ext.substring(1);
+        }
+        return allowedExtensions.contains(ext);
     }
 
     /**

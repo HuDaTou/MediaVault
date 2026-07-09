@@ -2,9 +2,11 @@ package com.overthinker.cloud.api.apis.media.api;
 
 import com.overthinker.cloud.api.apis.media.DTO.InitiateMultipartUploadRequest;
 import com.overthinker.cloud.api.apis.media.DTO.PresignedUploadRequest;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -77,11 +79,11 @@ public interface MediaClient {
     /**
      * 获取文件浏览URL
      *
-     * @param objectName 文件对象名
+     * @param assetId 媒体资产ID
      * @return 文件浏览URL
      */
-    @GetMapping("/media/url/{objectName}")
-    ResultData<String> getFileUrl(@PathVariable("objectName") String objectName);
+    @GetMapping("/media/url/{assetId}")
+    ResultData<String> getFileUrl(@PathVariable("assetId") Long assetId);
 
     /**
      * 获取文件强制下载URL
@@ -101,11 +103,11 @@ public interface MediaClient {
      * @param userId     上传用户ID
      * @param file       上传的文件
      * @param ruleName   上传规则名称（枚举值）
-     * @return 包含 assetId、objectName、fileUrl 等信息的Map
+     * @return 上传结果VO，包含 assetId、objectName、fileUrl 等信息
      */
     @PostMapping(value = "/media/upload/rule", consumes = "multipart/form-data")
-    ResultData<Map<String, Object>> uploadFileWithRuleName(
+    ResultData<UploadResultVO> uploadFileWithRuleName(
             @RequestHeader("X-User-Id") Long userId,
-            @RequestPart("file") org.springframework.web.multipart.MultipartFile file,
+            @RequestPart("file") MultipartFile file,
             @RequestParam("ruleName") String ruleName);
 }
