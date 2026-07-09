@@ -43,10 +43,10 @@ async function handleDelete(id: string) {
   try {
     await deleteBannerApi(id);
     message.success('删除成功');
-    gridApi.query();
   } catch {
-    // handled by interceptor
+    // 错误提示已由拦截器处理
   }
+  gridApi.query();
 }
 
 function handleBatchDelete() {
@@ -77,7 +77,7 @@ async function handleMoveUp(row: BannerVO) {
   if (!allItems) return;
   const idx = allItems.findIndex((item) => item.id === row.id);
   if (idx <= 0) return;
-  [allItems[idx], allItems[idx - 1]] = [allItems[idx - 1], allItems[idx]];
+  [allItems[idx]!, allItems[idx - 1]!] = [allItems[idx - 1]!, allItems[idx]!];
   const updated = allItems.map((item, i) => ({ ...item, sortOrder: i + 1 }));
   try {
     await updateBannerSortApi(updated);
@@ -93,7 +93,7 @@ async function handleMoveDown(row: BannerVO) {
   if (!allItems) return;
   const idx = allItems.findIndex((item) => item.id === row.id);
   if (idx < 0 || idx >= allItems.length - 1) return;
-  [allItems[idx], allItems[idx + 1]] = [allItems[idx + 1], allItems[idx]];
+  [allItems[idx]!, allItems[idx + 1]!] = [allItems[idx + 1]!, allItems[idx]!];
   const updated = allItems.map((item, i) => ({ ...item, sortOrder: i + 1 }));
   try {
     await updateBannerSortApi(updated);
@@ -120,11 +120,10 @@ function formatFileSize(size: number): string {
         </Button>
       </template>
 
-      <template #path="{ row }">
+      <template #url="{ row }">
         <Image
-          :src="(row as BannerVO).path"
+          :src="(row as BannerVO).url"
           :width="120"
-          :preview="{ mask: '点击预览' }"
           style="border-radius: 4px"
         />
       </template>

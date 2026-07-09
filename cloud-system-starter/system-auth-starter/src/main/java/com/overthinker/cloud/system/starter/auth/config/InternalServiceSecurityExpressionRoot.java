@@ -45,8 +45,8 @@ public class InternalServiceSecurityExpressionRoot implements MethodSecurityExpr
     }
 
     @Override
-    public boolean hasAuthority(String... authorities) {
-        return internalServiceChecker.get() || delegate.hasAuthority(authorities);
+    public boolean hasAnyAuthority(String... authorities) {
+        return internalServiceChecker.get() || delegate.hasAnyAuthority(authorities);
     }
 
     @Override

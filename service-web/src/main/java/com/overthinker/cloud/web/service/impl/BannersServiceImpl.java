@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.overthinker.cloud.api.apis.media.ENUM.MediaUploadRuleEnum;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.api.apis.media.api.MediaClient;
+import com.overthinker.cloud.api.apis.auth.api.UserClient;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import com.overthinker.cloud.common.core.resp.ReturnCodeEnum;
 import com.overthinker.cloud.web.entity.PO.Banners;
+import com.overthinker.cloud.web.entity.VO.BannerVO;
 import com.overthinker.cloud.web.entity.constants.RespConst;
 import com.overthinker.cloud.web.entity.constants.SQLConst;
 import com.overthinker.cloud.web.mapper.BannersMapper;
@@ -20,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * (Banners)表服务实现类
@@ -35,19 +37,71 @@ public class BannersServiceImpl extends ServiceImpl<BannersMapper, Banners> impl
 
     private final BannersMapper bannersMapper;
     private final MediaClient mediaClient;
+    private final UserClient userClient;
 
     @Override
     public List<String> getBanners() {
         List<Banners> banners = bannersMapper.selectList(new LambdaQueryWrapper<Banners>().orderByAsc(Banners::getSortOrder));
-        if (!banners.isEmpty()) return banners.stream().map(Banners::getPath).toList();
+        if (!banners.isEmpty()) {
+            return banners.stream()
+                    .map(b -> {
+                        try {
+                            ResultData<String> urlResult = mediaClient.getFileUrl(Long.valueOf(b.getMediaId()));
+                            if (urlResult.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && urlResult.getData() != null) {
+                                return urlResult.getData();
+                            }
+                        } catch (Exception e) {
+                            log.error("获取Banner文件URL失败, mediaId: {}", b.getMediaId(), e);
+                        }
+                        return "";
+                    })
+                    .filter(MyStringUtils::isNotNull)
+                    .toList();
+        }
         return List.of();
     }
 
     @Override
-    public List<Banners> backGetBanners() {
+    public List<BannerVO> backGetBanners() {
         List<Banners> banners = bannersMapper.selectList(new LambdaQueryWrapper<Banners>().orderByAsc(Banners::getSortOrder));
         if (!banners.isEmpty()) {
-            return banners;
+            return banners.stream()
+                    .map(b -> {
+                        try {
+                            String url = "";
+                            ResultData<String> urlResult = mediaClient.getFileUrl(Long.valueOf(b.getMediaId()));
+                            if (urlResult.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && urlResult.getData() != null) {
+                                url = urlResult.getData();
+                            }
+                            String userName = "";
+                            try {
+                                ResultData<String> userResult = userClient.getUsernameById(b.getUserId());
+                                if (userResult.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && userResult.getData() != null) {
+                                    userName = userResult.getData();
+                                }
+                            } catch (Exception ignored) {
+                                // ignore user query errors
+                            }
+                            return new BannerVO()
+                                    .setId(b.getId())
+                                    .setUrl(url)
+                                    .setSize(b.getSize())
+                                    .setType(b.getType())
+                                    .setSortOrder(b.getSortOrder())
+                                    .setUserName(userName)
+                                    .setCreateTime(b.getCreateTime());
+                        } catch (Exception e) {
+                            log.error("获取Banner文件URL失败, mediaId: {}", b.getMediaId(), e);
+                            return new BannerVO()
+                                    .setId(b.getId())
+                                    .setUrl("")
+                                    .setSize(b.getSize())
+                                    .setType(b.getType())
+                                    .setSortOrder(b.getSortOrder())
+                                    .setCreateTime(b.getCreateTime());
+                        }
+                    })
+                    .toList();
         }
         return List.of();
     }
@@ -60,20 +114,21 @@ public class BannersServiceImpl extends ServiceImpl<BannersMapper, Banners> impl
                 return ResultData.failure(RespConst.BANNER_MAX_COUNT_MSG);
             }
 
-            ResultData<Map<String, Object>> result = mediaClient.uploadFileWithRuleName(
+            ResultData<UploadResultVO> result = mediaClient.uploadFileWithRuleName(
                     SecurityUtils.getUserId(),
                     bannerImage,
                     MediaUploadRuleEnum.UI_BANNERS.name()
             );
 
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && result.getData() != null) {
-                String bannerUrl = (String) result.getData().get("fileUrl");
-                if (MyStringUtils.isNotNull(bannerUrl)) {
+                UploadResultVO uploadResult = result.getData();
+                String objectName = uploadResult.getObjectName();
+                if (MyStringUtils.isNotNull(objectName)) {
                     Banners banner = new Banners().setSize(bannerImage.getSize())
                             .setType(bannerImage.getContentType())
                             .setUserId(SecurityUtils.getUserId())
                             .setSortOrder((int) (bannersMapper.selectCount(null) + 1))
-                            .setPath(bannerUrl);
+                            .setMediaId(uploadResult.getAssetId().toString());
                     bannersMapper.insert(banner);
                     return ResultData.success(banner);
                 }
@@ -81,7 +136,7 @@ public class BannersServiceImpl extends ServiceImpl<BannersMapper, Banners> impl
             return ResultData.failure("上传失败");
         } catch (Exception e) {
             log.error(MediaUploadRuleEnum.UI_BANNERS.getDescription() + "上传失败", e);
-            return ResultData.failure();
+            return ResultData.failure("上传失败：" + e.getMessage());
         }
     }
 
@@ -89,8 +144,7 @@ public class BannersServiceImpl extends ServiceImpl<BannersMapper, Banners> impl
     public ResultData<String> removeBannerById(Long id) {
         Banners banner = bannersMapper.selectById(id);
         if (this.removeById(id)) {
-            String objectName = extractObjectName(banner.getPath());
-            ResultData<Void> result = mediaClient.deleteFile(SecurityUtils.getUserId(), objectName);
+            ResultData<Void> result = mediaClient.deleteFile(SecurityUtils.getUserId(), banner.getMediaId());
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode())) {
                 return ResultData.success("删除成功");
             }
@@ -107,23 +161,5 @@ public class BannersServiceImpl extends ServiceImpl<BannersMapper, Banners> impl
             bannersMapper.insert(banners.get(i));
         }
         return ResultData.success();
-    }
-
-    private String extractObjectName(String fileUrl) {
-        if (MyStringUtils.isNull(fileUrl)) {
-            return "";
-        }
-        try {
-            java.net.URI uri = java.net.URI.create(fileUrl);
-            String path = uri.getPath();
-            if (path != null && path.startsWith("/")) {
-                int secondSlash = path.indexOf('/', 1);
-                if (secondSlash != -1) {
-                    return path.substring(secondSlash + 1);
-                }
-            }
-        } catch (Exception ignored) {
-        }
-        return fileUrl;
     }
 }

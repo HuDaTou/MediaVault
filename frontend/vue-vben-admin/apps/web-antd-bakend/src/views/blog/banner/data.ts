@@ -8,9 +8,9 @@ export function useColumns(): VxeTableGridColumns<BannerVO> {
   return [
     { type: 'checkbox', width: 50 },
     {
-      field: 'path',
+      field: 'url',
       minWidth: 240,
-      slots: { default: 'path' },
+      slots: { default: 'url' },
       title: '预览图',
     },
     {
@@ -22,6 +22,7 @@ export function useColumns(): VxeTableGridColumns<BannerVO> {
     },
     { field: 'type', title: '类型', width: 120 },
     { field: 'sortOrder', title: '排序', width: 70, align: 'center' },
+    { field: 'userName', title: '上传者', width: 120 },
     {
       field: 'createTime',
       title: '创建时间',

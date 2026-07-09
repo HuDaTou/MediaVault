@@ -3,6 +3,7 @@ package com.overthinker.cloud.web.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import com.overthinker.cloud.web.entity.PO.Banners;
+import com.overthinker.cloud.web.entity.VO.BannerVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,9 +20,9 @@ public interface BannersService extends IService<Banners> {
     /**
      * 后台获取所有前台首页Banner图片
      *
-     * @return banners Entity（List）
+     * @return BannerVO 列表
      */
-    List<Banners> backGetBanners();
+    List<BannerVO> backGetBanners();
 
     /**
      * 上传Banner图片
@@ -51,7 +52,7 @@ public interface BannersService extends IService<Banners> {
     /**
      * 前台查询首页 banner列表
      *
-     * @return banners Entity（List）
+     * @return 图片URL列表（按sortOrder排序）
      */
     List<String> getBanners();
 }

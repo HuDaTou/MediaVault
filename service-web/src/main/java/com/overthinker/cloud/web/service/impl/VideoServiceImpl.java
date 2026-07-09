@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.overthinker.cloud.api.apis.auth.api.UserClient;
 import com.overthinker.cloud.api.apis.media.ENUM.MediaUploadRuleEnum;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.api.apis.media.api.MediaClient;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import com.overthinker.cloud.common.core.resp.ReturnCodeEnum;
@@ -51,14 +52,13 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     @Override
     public Map<String, Object> uploadVideo(MultipartFile videoFile) {
         try {
-            ResultData<Map<String, Object>> result = mediaClient.uploadFileWithRuleName(
+            ResultData<UploadResultVO> result = mediaClient.uploadFileWithRuleName(
                     SecurityUtils.getUserId(),
                     videoFile,
                     MediaUploadRuleEnum.VIDEO_PRIVATE.name()
             );
-
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && result.getData() != null) {
-                String videoUrl = (String) result.getData().get("fileUrl");
+                String videoUrl = result.getData().getFileUrl();
                 return Map.of(
                         "video", videoUrl,
                         "videoSize", videoFile.getSize() / 1024.0,
@@ -143,14 +143,13 @@ public class VideoServiceImpl extends ServiceImpl<VideoMapper, Video> implements
     @Override
     public String uploadVideoCover(MultipartFile videoCover) {
         try {
-            ResultData<Map<String, Object>> result = mediaClient.uploadFileWithRuleName(
+            ResultData<UploadResultVO> result = mediaClient.uploadFileWithRuleName(
                     SecurityUtils.getUserId(),
                     videoCover,
                     MediaUploadRuleEnum.VIDEO_COVER.name()
             );
-
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && result.getData() != null) {
-                return (String) result.getData().get("fileUrl");
+                return result.getData().getFileUrl();
             }
             return null;
         } catch (Exception e) {

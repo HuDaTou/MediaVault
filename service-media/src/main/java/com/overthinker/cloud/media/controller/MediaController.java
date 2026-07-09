@@ -1,5 +1,6 @@
 package com.overthinker.cloud.media.controller;
 
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.common.core.annotation.LogAnnotation;
 import com.overthinker.cloud.common.core.annotation.LogConst;
 import com.overthinker.cloud.common.core.base.BaseController;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -105,13 +107,13 @@ public class MediaController extends BaseController {
         return ResultData.success();
     }
 
-    @Operation(summary = "获取文件浏览URL", description = "获取指定文件的临时浏览URL，浏览器会尝试在线预览（适用于图片、视频、PDF等）")
-    @GetMapping("/url/{objectName}")
+    @Operation(summary = "获取文件浏览URL", description = "根据媒体资产ID获取临时浏览URL，浏览器会尝试在线预览（适用于图片、视频、PDF等）")
+    @GetMapping("/url/{assetId}")
     @AccessLimit(seconds = 60, maxCount = 30, msg = "查询操作过于频繁，请稍后再试")
     public ResultData<String> getFileUrl(
-            @Parameter(description = "文件的唯一对象名", required = true, in = ParameterIn.PATH)
-            @PathVariable("objectName") @NotBlank(message = "objectName不能为空") String objectName) {
-        return ResultData.success(uploadService.getPresignedFileUrl(objectName));
+            @Parameter(description = "媒体资产ID", required = true, in = ParameterIn.PATH)
+            @PathVariable("assetId") @NotNull(message = "assetId不能为空") Long assetId) {
+        return ResultData.success(uploadService.getPresignedFileUrl(assetId));
     }
 
     @Operation(summary = "获取文件强制下载URL", description = "获取指定文件的临时下载URL，浏览器会强制下载文件而不是在线预览")
@@ -127,7 +129,7 @@ public class MediaController extends BaseController {
     @PostMapping(value = "/upload", consumes = "multipart/form-data")
     @AccessLimit(seconds = 60, maxCount = 10, msg = "上传操作过于频繁，请稍后再试")
     @LogAnnotation(module = "媒体服务", operation = LogConst.INSERT)
-    public ResultData<Map<String, Object>> uploadFile(
+    public ResultData<UploadResultVO> uploadFile(
             @Parameter(hidden = true) @RequestHeader("X-User-Id") Long userId,
             @Parameter(description = "上传的文件", required = true) @RequestPart("file") MultipartFile file,
             @Parameter(description = "上传规则ID", required = true) @RequestParam("ruleId") Long ruleId) {
@@ -138,7 +140,7 @@ public class MediaController extends BaseController {
     @PostMapping(value = "/upload/rule", consumes = "multipart/form-data")
     @AccessLimit(seconds = 60, maxCount = 10, msg = "上传操作过于频繁，请稍后再试")
     @LogAnnotation(module = "媒体服务", operation = LogConst.INSERT)
-    public ResultData<Map<String, Object>> uploadFileWithRuleName(
+    public ResultData<UploadResultVO> uploadFileWithRuleName(
             @Parameter(hidden = true) @RequestHeader("X-User-Id") Long userId,
             @Parameter(description = "上传的文件", required = true) @RequestPart("file") MultipartFile file,
             @Parameter(description = "上传规则名称（枚举值，如：ARTICLE_COVER、USER_AVATAR）", required = true)

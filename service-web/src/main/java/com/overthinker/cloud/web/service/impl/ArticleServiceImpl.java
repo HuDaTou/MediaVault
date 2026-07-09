@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.overthinker.cloud.api.apis.media.ENUM.MediaUploadRuleEnum;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.api.apis.media.api.MediaClient;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import com.overthinker.cloud.common.core.resp.ReturnCodeEnum;
@@ -219,13 +220,13 @@ private final MediaClient mediaClient;
     @Override
     public ResultData<String> uploadArticleCover(MultipartFile articleCover) {
         try {
-            ResultData<Map<String, Object>> result = mediaClient.uploadFileWithRuleName(
+            ResultData<UploadResultVO> result = mediaClient.uploadFileWithRuleName(
                     SecurityUtils.getUserId(),
                     articleCover,
                     MediaUploadRuleEnum.ARTICLE_COVER.name()
             );
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && result.getData() != null) {
-                String fileUrl = (String) result.getData().get("fileUrl");
+                String fileUrl = result.getData().getFileUrl();
                 if (MyStringUtils.isNotNull(fileUrl)) {
                     return ResultData.success(fileUrl);
                 }
@@ -298,13 +299,13 @@ private final MediaClient mediaClient;
     @Override
     public ResultData<String> uploadArticleImage(MultipartFile articleImage) {
         try {
-            ResultData<Map<String, Object>> result = mediaClient.uploadFileWithRuleName(
+            ResultData<UploadResultVO> result = mediaClient.uploadFileWithRuleName(
                     SecurityUtils.getUserId(),
                     articleImage,
                     MediaUploadRuleEnum.ARTICLE_IMAGE.name()
             );
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && result.getData() != null) {
-                String fileUrl = (String) result.getData().get("fileUrl");
+                String fileUrl = result.getData().getFileUrl();
                 if (MyStringUtils.isNotNull(fileUrl)) {
                     return ResultData.success(fileUrl);
                 }

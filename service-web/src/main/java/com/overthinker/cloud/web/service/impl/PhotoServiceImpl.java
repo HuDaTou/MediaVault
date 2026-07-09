@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.overthinker.cloud.api.apis.media.ENUM.MediaUploadRuleEnum;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.api.apis.media.api.MediaClient;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import com.overthinker.cloud.common.core.resp.ReturnCodeEnum;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.overthinker.cloud.web.entity.constants.SQLConst.LIMIT_ONE_SQL;
@@ -103,14 +103,13 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
                 return ResultData.failure("照片名称存在重复");
             }
 
-            ResultData<Map<String, Object>> result = mediaClient.uploadFileWithRuleName(
+            ResultData<UploadResultVO> result = mediaClient.uploadFileWithRuleName(
                     SecurityUtils.getUserId(),
                     file,
                     MediaUploadRuleEnum.PHOTO_ALBUM.name()
             );
-
             if (result.getCode().equals(ReturnCodeEnum.SUCCESS.getCode()) && result.getData() != null) {
-                String bannerUrl = (String) result.getData().get("fileUrl");
+                String bannerUrl = result.getData().getFileUrl();
                 if (MyStringUtils.isNotNull(bannerUrl)) {
                     photoMapper.insert(new Photo()
                             .setUserId(SecurityUtils.getUserId())

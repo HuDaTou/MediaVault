@@ -1,6 +1,7 @@
 package com.overthinker.cloud.web.entity.PO;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.overthinker.cloud.common.core.entity.BasecopyProperties;
@@ -32,8 +33,8 @@ public class Banners extends BaseData implements BasecopyProperties {
     @Schema(description = "图片主键ID", example = "1234567890123456789")
     private Long id;
 
-    @Schema(description = "图片存储路径", example = "/upload/images/2023/06/12345.jpg")
-    private String path;
+    @Schema(description = "MinIO存储对象名称", example = "banners/a1b2c3.jpg")
+    private String mediaId;
 
     @Schema(description = "图片大小（字节）", example = "204800")
     private Long size;

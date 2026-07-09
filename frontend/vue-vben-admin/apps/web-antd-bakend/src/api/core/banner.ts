@@ -3,13 +3,12 @@ import { requestClient } from '#/api/request';
 /** Banner 实体 */
 export interface BannerVO {
   id: string;
-  path: string;
+  url: string;
   size: number;
   type: string;
-  userId: string;
   sortOrder: number;
+  userName: string;
   createTime: string;
-  updateTime: string;
 }
 
 /**

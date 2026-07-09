@@ -2,6 +2,7 @@ package com.overthinker.cloud.media.entity.VO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Data
 @Schema(description = "文件上传规则视图对象")
+@Accessors(chain = true)
 public class FileUploadRulesVO {
 
     @Schema(description = "主键ID", example = "1")

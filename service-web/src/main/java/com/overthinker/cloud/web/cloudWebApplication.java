@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 
-@SpringBootApplication(scanBasePackages = {"com.overthinker.cloud.web"})
+@SpringBootApplication(scanBasePackages = {"com.overthinker.cloud.web", "com.overthinker.cloud.common.db"})
 @MapperScan(basePackages = "com.overthinker.cloud.web.mapper")
 @Log4j2
 @EnableDiscoveryClient

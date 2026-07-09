@@ -6,6 +6,7 @@ import com.overthinker.cloud.common.core.exception.BusinessException;
 import com.overthinker.cloud.common.core.exception.FileUploadException;
 import com.overthinker.cloud.common.core.resp.ReturnCodeEnum;
 import com.overthinker.cloud.api.apis.media.ENUM.MediaUploadRuleEnum;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.media.config.MinioProperties;
 import com.overthinker.cloud.media.entity.DTO.InitiateMultipartUploadDTO;
 import com.overthinker.cloud.media.entity.PO.FileUploadRules;
@@ -84,30 +85,20 @@ public class UploadServiceImpl implements UploadService {
             );
         }
 
-        MediaAsset existingAsset = mediaAssetMapper.selectOne(
+        MediaAsset existingAsset = mediaAssetMapper.selectList(
                 new LambdaQueryWrapper<MediaAsset>()
                         .eq(MediaAsset::getFileMd5, dto.fileMd5())
                         .eq(MediaAsset::getStatus, MediaStatusEnum.UPLOADED.getCode())
                         .last("LIMIT 1")
-        );
+        ).stream().findFirst().orElse(null);
 
         if (existingAsset != null) {
             log.info("文件秒传命中，MD5: {}。直接复用现有文件: {}", dto.fileMd5(), existingAsset.getObjectName());
-            MediaAsset newAsset = new MediaAsset()
-                    .setFileName(dto.filename())
-                    .setObjectName(existingAsset.getObjectName())
-                    .setBucketName(existingAsset.getBucketName())
-                    .setFileSize(existingAsset.getFileSize())
-                    .setFileType(existingAsset.getFileType())
-                    .setFileMd5(dto.fileMd5())
-                    .setUploaderId(userId)
-                    .setStatus(MediaStatusEnum.UPLOADED.getCode());
-            mediaAssetMapper.insert(newAsset);
 
             Map<String, Object> result = new HashMap<>();
             result.put("instantUpload", true);
-            result.put("objectName", newAsset.getObjectName());
-            result.put("assetId", newAsset.getId());
+            result.put("objectName", existingAsset.getObjectName());
+            result.put("assetId", existingAsset.getId());
             return result;
         }
 
@@ -289,7 +280,7 @@ public class UploadServiceImpl implements UploadService {
             throw new BusinessException(ReturnCodeEnum.NOT_FOUND, "媒体资产不存在，ID: " + id);
         }
         MediaAssetVO vo = convertToVO(asset);
-        vo.setDownloadUrl(getPresignedFileUrl(asset.getObjectName()));
+        vo.setDownloadUrl(getPresignedFileUrl(asset.getId()));
         if (asset.getThumbnailName() != null) {
             vo.setThumbnailUrl(getPresignedThumbnailUrl(asset.getThumbnailName()));
         }
@@ -313,11 +304,11 @@ public class UploadServiceImpl implements UploadService {
     }
 
     @Override
-    public String getPresignedFileUrl(String objectName) {
+    public String getPresignedFileUrl(Long assetId) {
         MediaAsset asset = mediaAssetMapper.selectOne(
-                new LambdaQueryWrapper<MediaAsset>().eq(MediaAsset::getObjectName, objectName));
+                new LambdaQueryWrapper<MediaAsset>().eq(MediaAsset::getId, assetId));
         if (asset == null) {
-            throw new BusinessException(ReturnCodeEnum.NOT_FOUND, "文件不存在: " + objectName);
+            throw new BusinessException(ReturnCodeEnum.NOT_FOUND, "文件不存在, ID: " + assetId);
         }
 
         try {
@@ -329,7 +320,7 @@ public class UploadServiceImpl implements UploadService {
                             .expiry(1, TimeUnit.HOURS)
                             .build());
         } catch (Exception e) {
-            log.error("获取文件预签名URL失败: {}", objectName, e);
+            log.error("获取文件预签名URL失败, assetId: {}", assetId, e);
             throw new BusinessException(ReturnCodeEnum.INTERNAL_SERVER_ERROR, "获取文件下载链接失败");
         }
     }
@@ -415,30 +406,20 @@ public class UploadServiceImpl implements UploadService {
             storagePrefix = fileUploadRules.getStoragePrefix() != null ? fileUploadRules.getStoragePrefix() : "";
         }
 
-        MediaAsset existingAsset = mediaAssetMapper.selectOne(
+        MediaAsset existingAsset = mediaAssetMapper.selectList(
                 new LambdaQueryWrapper<MediaAsset>()
                         .eq(MediaAsset::getFileMd5, fileMd5)
                         .eq(MediaAsset::getStatus, MediaStatusEnum.UPLOADED.getCode())
                         .last("LIMIT 1")
-        );
+        ).stream().findFirst().orElse(null);
 
         if (existingAsset != null) {
             log.info("文件秒传命中，MD5: {}。直接复用现有文件: {}", fileMd5, existingAsset.getObjectName());
-            MediaAsset newAsset = new MediaAsset()
-                    .setFileName(fileName)
-                    .setObjectName(existingAsset.getObjectName())
-                    .setBucketName(existingAsset.getBucketName())
-                    .setFileSize(existingAsset.getFileSize())
-                    .setFileType(existingAsset.getFileType())
-                    .setFileMd5(fileMd5)
-                    .setUploaderId(userId)
-                    .setStatus(MediaStatusEnum.UPLOADED.getCode());
-            mediaAssetMapper.insert(newAsset);
 
             Map<String, Object> result = new HashMap<>();
             result.put("instantUpload", true);
-            result.put("objectName", newAsset.getObjectName());
-            result.put("assetId", newAsset.getId());
+            result.put("objectName", existingAsset.getObjectName());
+            result.put("assetId", existingAsset.getId());
             return result;
         }
 
@@ -578,7 +559,7 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> uploadFileWithRule(Long userId, MultipartFile file, Long ruleId) {
+    public UploadResultVO uploadFileWithRule(Long userId, MultipartFile file, Long ruleId) {
         log.info("开始使用上传规则直接上传文件，用户ID: {}, 规则ID: {}, 文件名: {}", userId, ruleId, file.getOriginalFilename());
 
         FileUploadRules fileUploadRules = fileUploadRulesService.getById(ruleId);
@@ -633,31 +614,21 @@ public class UploadServiceImpl implements UploadService {
             throw new FileUploadException("计算文件MD5失败", ReturnCodeEnum.FILE_UPLOAD_ERROR);
         }
 
-        MediaAsset existingAsset = mediaAssetMapper.selectOne(
+        MediaAsset existingAsset = mediaAssetMapper.selectList(
                 new LambdaQueryWrapper<MediaAsset>()
                         .eq(MediaAsset::getFileMd5, fileMd5)
                         .eq(MediaAsset::getStatus, MediaStatusEnum.UPLOADED.getCode())
                         .last("LIMIT 1")
-        );
+        ).stream().findFirst().orElse(null);
 
         if (existingAsset != null) {
             log.info("文件秒传命中，MD5: {}。直接复用现有文件: {}", fileMd5, existingAsset.getObjectName());
-            MediaAsset newAsset = new MediaAsset()
-                    .setFileName(fileName)
-                    .setObjectName(existingAsset.getObjectName())
-                    .setBucketName(existingAsset.getBucketName())
-                    .setFileSize(existingAsset.getFileSize())
-                    .setFileType(existingAsset.getFileType())
-                    .setFileMd5(fileMd5)
-                    .setUploaderId(userId)
-                    .setStatus(MediaStatusEnum.UPLOADED.getCode());
-            mediaAssetMapper.insert(newAsset);
 
-            Map<String, Object> result = new HashMap<>();
-            result.put("instantUpload", true);
-            result.put("objectName", newAsset.getObjectName());
-            result.put("assetId", newAsset.getId());
-            result.put("fileUrl", getPresignedFileUrl(newAsset.getObjectName()));
+            UploadResultVO result = new UploadResultVO()
+                    .setInstantUpload(true)
+                    .setObjectName(existingAsset.getObjectName())
+                    .setAssetId(existingAsset.getId())
+                    .setFileUrl(getPresignedFileUrl(existingAsset.getId()));
             return result;
         }
 
@@ -696,11 +667,11 @@ public class UploadServiceImpl implements UploadService {
             }
         });
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("instantUpload", false);
-        result.put("objectName", objectName);
-        result.put("assetId", asset.getId());
-        result.put("fileUrl", getPresignedFileUrl(objectName));
+        UploadResultVO result = new UploadResultVO()
+                .setInstantUpload(false)
+                .setObjectName(objectName)
+                .setAssetId(asset.getId())
+                .setFileUrl(getPresignedFileUrl(asset.getId()));
 
         log.info("成功使用上传规则完成文件上传: objectName: {}, assetId: {}", objectName, asset.getId());
         return result;
@@ -708,7 +679,7 @@ public class UploadServiceImpl implements UploadService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Map<String, Object> uploadFileWithRuleName(Long userId, MultipartFile file, String ruleName) {
+    public UploadResultVO uploadFileWithRuleName(Long userId, MultipartFile file, String ruleName) {
         log.info("开始使用枚举规则直接上传文件，用户ID: {}, 规则名称: {}, 文件名: {}", userId, ruleName, file.getOriginalFilename());
 
         // 根据规则名称查找枚举
@@ -767,31 +738,20 @@ public class UploadServiceImpl implements UploadService {
         }
 
         // 检查是否可以秒传
-        MediaAsset existingAsset = mediaAssetMapper.selectOne(
+        MediaAsset existingAsset = mediaAssetMapper.selectList(
                 new LambdaQueryWrapper<MediaAsset>()
                         .eq(MediaAsset::getFileMd5, fileMd5)
                         .eq(MediaAsset::getStatus, MediaStatusEnum.UPLOADED.getCode())
-                        .last("LIMIT 1")
-        );
+        ).stream().findFirst().orElse(null);
 
         if (existingAsset != null) {
             log.info("文件秒传命中，MD5: {}。直接复用现有文件: {}", fileMd5, existingAsset.getObjectName());
-            MediaAsset newAsset = new MediaAsset()
-                    .setFileName(fileName)
-                    .setObjectName(existingAsset.getObjectName())
-                    .setBucketName(existingAsset.getBucketName())
-                    .setFileSize(existingAsset.getFileSize())
-                    .setFileType(existingAsset.getFileType())
-                    .setFileMd5(fileMd5)
-                    .setUploaderId(userId)
-                    .setStatus(MediaStatusEnum.UPLOADED.getCode());
-            mediaAssetMapper.insert(newAsset);
 
-            Map<String, Object> result = new HashMap<>();
-            result.put("instantUpload", true);
-            result.put("objectName", newAsset.getObjectName());
-            result.put("assetId", newAsset.getId());
-            result.put("fileUrl", getPresignedFileUrl(newAsset.getObjectName()));
+            UploadResultVO result = new UploadResultVO()
+                    .setInstantUpload(true)
+                    .setObjectName(existingAsset.getObjectName())
+                    .setAssetId(existingAsset.getId())
+                    .setFileUrl(getPresignedFileUrl(existingAsset.getId()));
             return result;
         }
 
@@ -833,11 +793,11 @@ public class UploadServiceImpl implements UploadService {
             }
         });
 
-        Map<String, Object> result = new HashMap<>();
-        result.put("instantUpload", false);
-        result.put("objectName", objectName);
-        result.put("assetId", asset.getId());
-        result.put("fileUrl", getPresignedFileUrl(objectName));
+        UploadResultVO result = new UploadResultVO()
+                .setInstantUpload(false)
+                .setObjectName(objectName)
+                .setAssetId(asset.getId())
+                .setFileUrl(getPresignedFileUrl(asset.getId()));
 
         log.info("成功使用枚举规则完成文件上传: objectName: {}, assetId: {}", objectName, asset.getId());
         return result;

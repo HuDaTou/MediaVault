@@ -7,7 +7,7 @@
         select *
         from t_article as a
         where a.status = #{status}
-          and a.is_deleted = 0
+          and a.is_deleted = false
         order by rand()
         limit #{limit}
 

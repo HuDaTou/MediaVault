@@ -6,6 +6,7 @@ import com.overthinker.cloud.common.core.base.BaseController;
 import com.overthinker.cloud.common.core.resp.ResultData;
 import com.overthinker.cloud.system.starter.redis.annotation.AccessLimit;
 import com.overthinker.cloud.web.entity.PO.Banners;
+import com.overthinker.cloud.web.entity.VO.BannerVO;
 import com.overthinker.cloud.web.service.BannersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -55,7 +56,7 @@ public class BannersController extends BaseController {
     @LogAnnotation(module = "信息管理", operation = LogConst.GET)
     @AccessLimit(seconds = 60, maxCount = 60)
     @GetMapping("/back/list")
-    public ResultData<List<Banners>> backGetBanners() {
+    public ResultData<List<BannerVO>> backGetBanners() {
         return messageHandler(() -> bannersService.backGetBanners());
     }
 

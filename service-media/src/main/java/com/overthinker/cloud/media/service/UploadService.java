@@ -1,6 +1,7 @@
 package com.overthinker.cloud.media.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.overthinker.cloud.api.apis.media.VO.UploadResultVO;
 import com.overthinker.cloud.media.entity.DTO.InitiateMultipartUploadDTO;
 import com.overthinker.cloud.media.entity.VO.MediaAssetVO;
 
@@ -80,12 +81,12 @@ public interface UploadService {
     void deleteFile(Long userId, String objectName);
 
     /**
-     * 获取用于下载文件的预签名URL
+     * 根据ID获取文件的预签名URL
      *
-     * @param objectName 文件的唯一对象名
+     * @param assetId 媒体资产ID
      * @return 用于下载的预签名URL
      */
-    String getPresignedFileUrl(String objectName);
+    String getPresignedFileUrl(Long assetId);
 
     /**
      * 获取缩略图的预签名URL
@@ -142,9 +143,9 @@ public interface UploadService {
      * @param userId  上传用户ID
      * @param file    上传的文件
      * @param ruleId  上传规则ID
-     * @return 包含 assetId、objectName、fileUrl 等信息的Map
+     * @return 上传结果VO，包含 assetId、objectName、fileUrl 等信息
      */
-    Map<String, Object> uploadFileWithRule(Long userId, MultipartFile file, Long ruleId);
+    UploadResultVO uploadFileWithRule(Long userId, MultipartFile file, Long ruleId);
 
     /**
      * 使用枚举规则直接上传文件
@@ -155,7 +156,7 @@ public interface UploadService {
      * @param userId   上传用户ID
      * @param file     上传的文件
      * @param ruleName 上传规则名称（枚举值，如：ARTICLE_COVER、USER_AVATAR）
-     * @return 包含 assetId、objectName、fileUrl 等信息的Map
+     * @return 上传结果VO，包含 assetId、objectName、fileUrl 等信息
      */
-    Map<String, Object> uploadFileWithRuleName(Long userId, MultipartFile file, String ruleName);
+    UploadResultVO uploadFileWithRuleName(Long userId, MultipartFile file, String ruleName);
 }
